@@ -1,6 +1,30 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "bolt"
+name = "bolt-diy"
 compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2025-03-28"
 pages_build_output_dir = "./build/client"
 send_metrics = false
+
+[env.production]
+name = "bolt-diy-prod"
+compatibility_date = "2025-03-28"
+
+[env.staging]
+name = "bolt-diy-staging"
+compatibility_date = "2025-03-28"
+
+# Security headers for production
+[[env.production.rules]]
+type = "Header"
+headers = { "X-Frame-Options" = "DENY", "X-Content-Type-Options" = "nosniff", "Referrer-Policy" = "strict-origin-when-cross-origin", "Permissions-Policy" = "camera=(), microphone=(), geolocation=()" }
+
+# Cache configuration
+[[env.production.rules]]
+type = "Header"
+headers = { "Cache-Control" = "public, max-age=31536000, immutable" }
+globs = ["*.js", "*.css", "*.woff2", "*.png", "*.jpg", "*.svg"]
+
+[[env.production.rules]]
+type = "Header"
+headers = { "Cache-Control" = "public, max-age=0, must-revalidate" }
+globs = ["*.html"]
