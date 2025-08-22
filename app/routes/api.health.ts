@@ -26,7 +26,7 @@ export const loader = async ({ request: _request }: LoaderFunctionArgs) => {
         timestamp: new Date().toISOString(),
         error: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 503 }
+      { status: 503 },
     );
   }
 };
